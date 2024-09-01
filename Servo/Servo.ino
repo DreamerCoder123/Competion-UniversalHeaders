@@ -8,8 +8,8 @@ void setup(){
     first_arm.init(array,3);//初始化手臂
 }
 void loop(){
-    first_arm.Slow_move(recorded_end,10);
+    first_arm.Slow_move(recorded_end,40);
     first_arm.insistace(200);
-    first_arm.Slow_move(recorded_start,10);
+    first_arm.Slow_move(recorded_start,40);
     first_arm.insistace(200);
 }

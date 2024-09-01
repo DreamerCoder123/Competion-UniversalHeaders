@@ -3,5 +3,6 @@
     "configuration": "cpu=atmega328",
     "sketch": "Servo.ino",
     "port": "COM3",
+    "output": "./build",
     "programmer": "arduino:avrisp"
 }

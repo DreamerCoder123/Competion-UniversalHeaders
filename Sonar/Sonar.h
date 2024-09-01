@@ -19,7 +19,7 @@ Sonar::Sonar(unsigned char pin_T, unsigned char pin_E)
 short int Sonar::instant_distance()
 {
     digitalWrite(this->pinT, LOW);
-    delayMicroseconds(2);//延迟2ms
+    delayMicroseconds(2);
     digitalWrite(this->pinT, HIGH);
     delayMicroseconds(10);
     digitalWrite(this->pinT, LOW); // 10us脉冲触发
@@ -28,10 +28,10 @@ short int Sonar::instant_distance()
 short int Sonar::avg_distance()
 {
     const int steps = 5;
-    short int total=0;
+    short int total = 0;
     for (int i = 0; i < steps; i++)
     {
-        total+=instant_distance();
+        total += instant_distance();
     }
-    return total/steps;
+    return total / steps;
 }

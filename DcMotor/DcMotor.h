@@ -1,4 +1,4 @@
-// Author : 墨影余韵
+// Author : 李昊哲
 // Date: 2024/8/30
 #pragma once
 class DcMotor

@@ -2,6 +2,6 @@
     "configuration": "cpu=atmega328",
     "board": "arduino:avr:diecimila",
     "sketch": "Servo\\Servo.ino",
-    "port": "COM6",
+    "port": "COM3",
     "programmer": "arduino:avrisp"
 }

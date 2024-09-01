@@ -85,6 +85,7 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
             this->Servo_array[i].FastMove_withOutDelay(pulse_array[i]);
             
         }
+        delay(20);
     }
 }
 void Arm::insistace(short int time)
