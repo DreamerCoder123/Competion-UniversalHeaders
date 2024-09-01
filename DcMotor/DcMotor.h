@@ -1,4 +1,5 @@
-// Author : 末影余韵s
+// Author : 墨影余韵
+// Date: 2024/8/30
 #pragma once
 class DcMotor
 {
