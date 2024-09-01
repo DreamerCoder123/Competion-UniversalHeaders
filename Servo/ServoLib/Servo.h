@@ -15,6 +15,7 @@ public:
     Servo() {};
     void FastMove_withOutDelay(short int pulse); // 不保证准确性和稳定性的函数，没有延迟
     bool ServoTest(bool while_enable);           // 测试函数，可以测试单个电机的脉宽值
+    void judgeAcessibility(short int pulse);
 };
 Servo::Servo(int servo_pin)
 {
@@ -25,6 +26,7 @@ Servo::Servo(int servo_pin)
 }
 void Servo::FastMove_withOutDelay(short int pulse)
 {
+    judgeAcessibility(pulse);
     digitalWrite(this->Servo_pin, HIGH);
     delayMicroseconds(pulse);
     digitalWrite(this->Servo_pin, LOW);
@@ -32,7 +34,7 @@ void Servo::FastMove_withOutDelay(short int pulse)
 }
 bool Servo::ServoTest(bool while_enable)
 {
-    bool temp=false;                                   // 垃圾
+    bool temp = false;                           // 垃圾
     const short int servo_test_sensitivity = 50; // 这个变量设置了Servo测试的灵敏度
     do
     {
@@ -54,4 +56,12 @@ bool Servo::ServoTest(bool while_enable)
         FastMove_withOutDelay(this->currentPulse);
     } while (while_enable);
     return temp;
+}
+void Servo::judgeAcessibility(short int pulse)
+{
+    if (pulse <= 400 || pulse > 2600)
+    {
+        Serial.println("[Warning] input pulse not ligal");
+        while (1);
+    }
 }
