@@ -75,7 +75,6 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
                 this->Servo_array[j].FastMove_withOutDelay(this->Servo_array[j].currentPulse += deltaPulse[j] / Pulse_steps);
 
             }
-            delay(20);
         }
     }
     // ! 对机械臂的状态进行补偿
@@ -86,9 +85,7 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
             this->Servo_array[i].FastMove_withOutDelay(pulse_array[i]);
             
         }
-        delay(20);
     }
-    delay(20);
 }
 void Arm::insistace(short int time)
 {
@@ -99,6 +96,5 @@ void Arm::insistace(short int time)
         {
             this->Servo_array[i].FastMove_withOutDelay(this->Servo_array[i].currentPulse);
         }
-        delay(20);
     }
 }
