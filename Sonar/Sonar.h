@@ -19,6 +19,7 @@ Sonar::Sonar(unsigned char pin_T, unsigned char pin_E)
 short int Sonar::instant_distance()
 {
     digitalWrite(this->pinT, LOW);
+    delayMicroseconds(2);//延迟2ms
     digitalWrite(this->pinT, HIGH);
     delayMicroseconds(10);
     digitalWrite(this->pinT, LOW); // 10us脉冲触发
