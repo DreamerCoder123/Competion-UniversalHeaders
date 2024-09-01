@@ -36,7 +36,7 @@ void Arm::test_arm()
     {
         if (next_bool)
         {
-            Serial.println("Current Number debugging:");
+            Serial.println("Last motor debugging:");
             Serial.println(current_debugging);
             current_debugging++;
             next_bool = false; // 防止下次跳过

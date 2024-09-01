@@ -33,7 +33,7 @@ void Servo::FastMove_withOutDelay(short int pulse)
 bool Servo::ServoTest(bool while_enable)
 {
     bool temp=false;                                   // 垃圾
-    const short int servo_test_sensitivity = 10; // 这个变量设置了Servo测试的灵敏度
+    const short int servo_test_sensitivity = 50; // 这个变量设置了Servo测试的灵敏度
     do
     {
         switch (Serial.read())
