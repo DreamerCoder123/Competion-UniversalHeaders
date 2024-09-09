@@ -1,5 +1,4 @@
 # 简单复合机械臂控制程序
-Author:李昊哲
 ## 使用方法 Usage
     1.在你的.ino文件中输入#include "Arm.h"
     2.在setup()函数中进行初始化
