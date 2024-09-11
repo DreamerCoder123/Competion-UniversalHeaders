@@ -88,14 +88,15 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
         delay(20);
     }
 }
-void Arm::insistace(short int time)
+void Arm::insistace(short int times)
 {
     unsigned long long currentTime = millis();
-    while (millis() - currentTime < time)
+    while (millis() - currentTime < times)
     {
         for (int i = 0; i < this->Full_servo_index; i++)
         {
             this->Servo_array[i].FastMove_withOutDelay(this->Servo_array[i].currentPulse);
         }
+        delay(20);
     }
 }
