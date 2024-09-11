@@ -59,9 +59,8 @@ bool Servo::ServoTest(bool while_enable)
 }
 void Servo::judgeAcessibility(short int pulse)
 {
-    if (pulse <= 400 || pulse > 2600)
+    if (pulse <= 200 || pulse > 3000)
     {
         Serial.println("[Warning] input pulse not ligal");
-        while (1);
     }
 }
