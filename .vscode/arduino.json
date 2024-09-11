@@ -1,6 +1,7 @@
 {
     "board": "arduino:avr:mega",
     "port": "COM6",
-    "sketch": "qtis\\qtis.ino",
-    "configuration": "cpu=atmega2560"
+    "sketch": "main.ino",
+    "configuration": "cpu=atmega2560",
+    "output": "C:\\Users\\w1894\\Desktop\\visualstudioOutput"
 }

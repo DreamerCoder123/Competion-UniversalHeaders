@@ -9,12 +9,12 @@ private:
     short int Full_servo_index; // 所有角度舵机序号
 public:
     short int Servo_index = 0;
-    void init(short int *pins, short int length);
+    void init(unsigned char *pins, short int length);
     void test_arm();                                         // 对手臂进行测试
     void Slow_move(short int *pulse_array, short int speed); // 手臂运动
     void insistace(short int time);
 };
-void Arm::init(short int *pins, short int length)
+void Arm::init(unsigned char *pins, short int length)
 {
     for (int i = 0; i < length; i++)
     {
