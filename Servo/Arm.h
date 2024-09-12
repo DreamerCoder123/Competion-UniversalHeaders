@@ -64,18 +64,16 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
     const short int Pulse_steps = speed;
     for (int i = 0; i < this->Full_servo_index; i++)
     {
-        deltaPulse[i] = pulse_array[i] - this->Servo_array[i].currentPulse;
+        deltaPulse[i] = (pulse_array[i] - this->Servo_array[i].currentPulse);
         // 对每一个角度舵机进行差值计算
     }
     for (int i = 0; i < Pulse_steps; i++)
     {
-        for(int x=0;x<3;x++){
-            for (int j = 0; j < this->Full_servo_index; j++)
-            {
-                this->Servo_array[j].FastMove_withOutDelay(this->Servo_array[j].currentPulse += deltaPulse[j] / Pulse_steps);
-
-            }
+        for (int j = 0; j < this->Full_servo_index; j++)
+        {
+            this->Servo_array[j].FastMove_withOutDelay(this->Servo_array[j].currentPulse + deltaPulse[j] / Pulse_steps);
         }
+        delay(10);
     }
     // ! 对机械臂的状态进行补偿
     for (int i = 0; i < this->Full_servo_index; i++)
@@ -83,7 +81,6 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
         for (int j = 0; j < 5; j++)
         {
             this->Servo_array[i].FastMove_withOutDelay(pulse_array[i]);
-            
         }
         delay(20);
     }

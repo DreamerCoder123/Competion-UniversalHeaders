@@ -4,6 +4,7 @@
 #include "Sonar\Sonar.h"
 #include "HUSKYLENS.h"
 #include "SoftwareSerial.h"
+#include "servopoints.h"
 unsigned char list_basket[3] = {13, 12, 11};
 unsigned char list_grabber[3] = {10, 9, 8};
 Arm Arm_basket;     // 小车有篮子的机械臂
@@ -36,7 +37,7 @@ bool huskylens_scan()
 }
 bool turntable_husky(Arm arm1, Arm arm2) // 依据哈士奇识别的结果调整角度舵机的位置
 {
-    const char sensitivity = 5;
+    const char sensitivity = 10;
     if (!huskylens_scan())
     {
         return;
@@ -49,7 +50,7 @@ bool turntable_husky(Arm arm1, Arm arm2) // 依据哈士奇识别的结果调整
     husky.customText("Error:" + String(mapp) + String(abs(NewError) < sensitivity ? " OK Suki" : " Waiting"), 0, 0);
     arm1.insistace(30);
     arm2.insistace(30);
-    return abs(NewError) < sensitivity;
+    return abs(error) < sensitivity;
 }
 void setup()
 {
@@ -71,12 +72,24 @@ void setup()
     {
         int cx = (millis() - ct);
         husky.customText("Please wait..." + String(cx), 0, 0);
-    } while (millis() - ct < 5000);
+    } while (millis() - ct < 3000);
 }
 void loop()
 {
-    while (!turntable_husky(Arm_grabber, Arm_basket))
+    short int temp = 0;
+    for (int i = 0; i < 50; i++)
     {
-        
+        temp += turntable_husky(Arm_grabber, Arm_basket);
+        if (temp > 40 && huskylens_scan())
+        {
+            Arm_grabber.Slow_move(GRABBER_READY, 100);
+            Arm_grabber.insistace(1000);
+            Arm_grabber.Slow_move(GRABBER_DOWN, 100);
+            Arm_grabber.insistace(1000);
+            Arm_grabber.Slow_move(GRABBER_GRAB, 100);
+            Arm_grabber.insistace(1000);
+            Arm_grabber.Slow_move(GRABBER_READY, 100);
+            break;
+        }
     }
 }
