@@ -10,27 +10,28 @@ private:
     int Servo_pin;
 
 public:
-    short int currentPulse; // 标注了现在的脉宽
+    short int currentPulse=1200; // 标注了现在的脉宽
     Servo(int servo_pin);
     Servo() {};
     void FastMove_withOutDelay(short int pulse); // 不保证准确性和稳定性的函数，没有延迟
     bool ServoTest(bool while_enable);           // 测试函数，可以测试单个电机的脉宽值
-    void judgeAcessibility(short int pulse);
+    bool judgeAcessibility(short int pulse);
 };
 Servo::Servo(int servo_pin)
 {
     this->Servo_pin = servo_pin;
     pinMode(this->Servo_pin, OUTPUT);
     // 400-2500
-    FastMove_withOutDelay(1200);
 }
 void Servo::FastMove_withOutDelay(short int pulse)
 {
-    judgeAcessibility(pulse);
+    if (judgeAcessibility(pulse))
+    {
+        this->currentPulse = pulse;
+    }
     digitalWrite(this->Servo_pin, HIGH);
     delayMicroseconds(pulse);
     digitalWrite(this->Servo_pin, LOW);
-    this->currentPulse = pulse;
 }
 bool Servo::ServoTest(bool while_enable)
 {
@@ -57,10 +58,12 @@ bool Servo::ServoTest(bool while_enable)
     } while (while_enable);
     return temp;
 }
-void Servo::judgeAcessibility(short int pulse)
+bool Servo::judgeAcessibility(short int pulse)
 {
-    if (pulse <= 200 || pulse > 3000)
+    if (pulse < 200 || pulse > 3000)
     {
-        Serial.println("[Warning] input pulse not ligal");
+        Serial.println(String() + F("[Warning] input pulse not ligal") + pulse);
+        return false;
     }
+    return true;
 }
