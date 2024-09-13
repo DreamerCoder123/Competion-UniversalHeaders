@@ -94,6 +94,5 @@ void Arm::insistace(short int times)
         {
             this->Servo_array[i].FastMove_withOutDelay(this->Servo_array[i].currentPulse);
         }
-        delay(20);
     }
 }

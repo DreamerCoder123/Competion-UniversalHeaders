@@ -1,4 +1,8 @@
 #pragma once
-short int GRABBER_READY[]={1200,850,1000};
-short int GRABBER_DOWN[]={600,1460,2650};
-short int GRABBER_GRAB[]={1200,1460,2650};
+const bool DUBUGGING = false;
+short int GRABBER_READY[] = {600, 1450, 1200, 1200, 1200, 1200};
+short int GRABBER_DOWN[] = {600, 1450, 2450, 1200, 1200, 1200};
+short int GRABBER_GRAB[] = {1300, 1450, 2450, 1200, 1200, 1200};
+short int GRABBER_RELEASE_1[]={1300, 1450, 1050, 1450, 2650, 2000};//TODO
+short int GRABBER_RELEASE_2[]={500, 1450, 1050, 1450, 2650, 2000};
+//500

@@ -5,10 +5,8 @@
 #include "HUSKYLENS.h"
 #include "SoftwareSerial.h"
 #include "servopoints.h"
-unsigned char list_basket[3] = {13, 12, 11};
-unsigned char list_grabber[3] = {10, 9, 8};
-Arm Arm_basket;     // 小车有篮子的机械臂
-Arm Arm_grabber;    // 小车带有抓手的机械臂
+unsigned char arms_list[6] = {10, 9, 8, 13, 12, 11};
+Arm arms;
 Servo turnTable(2); // 小车转盘 2450-350 脉宽增加顺时针转动
 SoftwareSerial huskylens_softwareSerial(51, 52);
 HUSKYLENSResult huskylens_result; // 哈士奇结果存储
@@ -35,7 +33,7 @@ bool huskylens_scan()
     }
     return false;
 }
-bool turntable_husky(Arm arm1, Arm arm2) // 依据哈士奇识别的结果调整角度舵机的位置
+bool turntable_husky(Arm arms) // 依据哈士奇识别的结果调整角度舵机的位置
 {
     const char sensitivity = 10; // 识别的精确度
     if (!huskylens_scan())
@@ -48,15 +46,13 @@ bool turntable_husky(Arm arm1, Arm arm2) // 依据哈士奇识别的结果调整
     huskylens_scan();
     short int NewError = huskylens_result.xCenter - husky_xm / 2;
     husky.customText("Error:" + String(mapp) + String(abs(NewError) < sensitivity ? " OK" : " Waiting"), 0, 0);
-    arm1.insistace(30);
-    arm2.insistace(30);
+    arms.insistace(10);
     return abs(error) < sensitivity;
 }
 void setup()
 {
     Serial.begin(115200);
-    Arm_basket.init(list_basket, 3);
-    Arm_grabber.init(list_grabber, 3);
+    arms.init(arms_list, 6);
     // 初始机械臂对象
     huskylens_softwareSerial.begin(9600);
     while (!husky.begin(huskylens_softwareSerial))
@@ -76,23 +72,36 @@ void setup()
 }
 void loop()
 {
+    while (DUBUGGING)
+        arms.test_arm();
     short int temp = 0;
-    for (int i = 0; i < 50; i++)
+    for (int i = 0; i < 20; i++)
     {
-        temp += turntable_husky(Arm_grabber, Arm_basket);
+        temp += turntable_husky(arms);
         Serial.println(temp);
-        if (temp > 40 && huskylens_scan())
+        husky.customText(String(temp), 0, 0);
+        if (temp > 13 && huskylens_scan())
         {
-            Arm_grabber.Slow_move(GRABBER_READY, 100);
-            Arm_grabber.insistace(1000);
-            Arm_grabber.Slow_move(GRABBER_DOWN, 100);
-            Arm_grabber.insistace(1000);
-            Arm_grabber.Slow_move(GRABBER_GRAB, 100);
-            Arm_grabber.insistace(1000);
-            Arm_grabber.Slow_move(GRABBER_READY, 100);
-            Arm_grabber.insistace(3000);
-            temp = 0;//防止重复执行
+            arms.Slow_move(GRABBER_READY, 100);
+            arms.insistace(1000);
+            arms.Slow_move(GRABBER_DOWN, 100);
+            arms.insistace(1000);
+            arms.Slow_move(GRABBER_GRAB, 100);
+            arms.insistace(1000);
+            arms.Slow_move(GRABBER_READY, 100);
+            arms.insistace(3000);
+            arms.Slow_move(GRABBER_RELEASE_1, 200);
+            arms.insistace(1000);
+            arms.Slow_move(GRABBER_RELEASE_2,100);
+            arms.insistace(1000);
+            arms.Slow_move(GRABBER_READY, 100);
+            arms.insistace(1000);
+            temp = 0; // 防止重复执行
             break;
+        }
+        else
+        {
+            arms.insistace(20);
         }
     }
 }

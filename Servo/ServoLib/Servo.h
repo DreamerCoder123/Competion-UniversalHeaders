@@ -10,7 +10,7 @@ private:
     int Servo_pin;
 
 public:
-    short int currentPulse=1200; // 标注了现在的脉宽
+    short int currentPulse = 1200; // 标注了现在的脉宽
     Servo(int servo_pin);
     Servo() {};
     void FastMove_withOutDelay(short int pulse); // 不保证准确性和稳定性的函数，没有延迟
@@ -41,18 +41,21 @@ bool Servo::ServoTest(bool while_enable)
     {
         switch (Serial.read())
         {
-        case 'u':
-            this->currentPulse += servo_test_sensitivity;
-            // going up
-            break;
-        case 'd':
-            // going down
-            this->currentPulse -= servo_test_sensitivity;
-            break;
         case 'q':
             temp = true; // 退出当前调试的机械
             Serial.print("Dubugging     TargetPulse");
             Serial.println(this->currentPulse);
+            break;
+        case 'u':
+            this->currentPulse += servo_test_sensitivity;
+            Serial.println(String("CurrentPulse ")+String(currentPulse));
+            break;
+            // going up
+        case 'd':
+            // going down
+            this->currentPulse -= servo_test_sensitivity;
+            Serial.println(String("CurrentPulse ")+String(currentPulse));
+            break;
         }
         FastMove_withOutDelay(this->currentPulse);
     } while (while_enable);
