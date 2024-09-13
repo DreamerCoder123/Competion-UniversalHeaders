@@ -37,17 +37,17 @@ bool huskylens_scan()
 }
 bool turntable_husky(Arm arm1, Arm arm2) // 依据哈士奇识别的结果调整角度舵机的位置
 {
-    const char sensitivity = 10;
+    const char sensitivity = 10; // 识别的精确度
     if (!huskylens_scan())
     {
-        return;
+        return false;
     }
-    short int error = -1 * (huskylens_result.xCenter - husky_xm / 2);
-    short int mapp = map(error, -1 * husky_xm, husky_xm, -100, +100);
+    short int error = -1 * (huskylens_result.xCenter - husky_xm / 2); // 识别到的物体在哈士奇在屏幕上的误差
+    short int mapp = map(error, -1 * husky_xm, husky_xm, -200, +200); // 对哈士奇识别到的差值
     turnTable.FastMove_withOutDelay(constrain(turnTable.currentPulse + mapp, 200, 2600));
     huskylens_scan();
     short int NewError = huskylens_result.xCenter - husky_xm / 2;
-    husky.customText("Error:" + String(mapp) + String(abs(NewError) < sensitivity ? " OK Suki" : " Waiting"), 0, 0);
+    husky.customText("Error:" + String(mapp) + String(abs(NewError) < sensitivity ? " OK" : " Waiting"), 0, 0);
     arm1.insistace(30);
     arm2.insistace(30);
     return abs(error) < sensitivity;
@@ -80,6 +80,7 @@ void loop()
     for (int i = 0; i < 50; i++)
     {
         temp += turntable_husky(Arm_grabber, Arm_basket);
+        Serial.println(temp);
         if (temp > 40 && huskylens_scan())
         {
             Arm_grabber.Slow_move(GRABBER_READY, 100);
@@ -89,6 +90,8 @@ void loop()
             Arm_grabber.Slow_move(GRABBER_GRAB, 100);
             Arm_grabber.insistace(1000);
             Arm_grabber.Slow_move(GRABBER_READY, 100);
+            Arm_grabber.insistace(3000);
+            temp = 0;//防止重复执行
             break;
         }
     }

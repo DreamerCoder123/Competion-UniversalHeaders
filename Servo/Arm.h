@@ -87,7 +87,7 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
 }
 void Arm::insistace(short int times)
 {
-    unsigned long long currentTime = millis();
+    unsigned long currentTime = millis();
     while (millis() - currentTime < times)
     {
         for (int i = 0; i < this->Full_servo_index; i++)
