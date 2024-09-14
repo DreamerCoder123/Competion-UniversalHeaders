@@ -3,11 +3,11 @@ class qtis
 {
 private:
     unsigned char pin;
-    unsigned char weight; // 设定当前qti权重
-
+    char weight; // 设定当前qti权重
 public:
-    bool getWeight();
+    short int getWeight();
     qtis(unsigned char pin, unsigned char weight);
+    qtis() {};
 };
 qtis::qtis(unsigned char pin, unsigned char weight)
 {
@@ -15,7 +15,34 @@ qtis::qtis(unsigned char pin, unsigned char weight)
     this->pin = pin;
     this->weight = weight;
 }
-bool qtis::getWeight()
+short int qtis::getWeight()
 {
-    return digitalRead(this->pin) * this->weight; // 返回加权数
+    return (digitalRead(this->pin)) * this->weight; // 返回加权数
+}
+class New_qtis
+{
+public:
+    New_qtis(qtis *qti);
+    short int _qtiread();
+
+private:
+    qtis qti[6];
+    const short int PINS_MAX = 6;
+};
+New_qtis::New_qtis(qtis *qti)
+{
+    for (int i = 0; i < PINS_MAX; i++)
+    {
+        this->qti[i] = qti[i]; // 对所有的qti进行初始化
+    }
+}
+short int New_qtis::_qtiread()
+{
+    // 统一以向右为正
+    short int total = 0;
+    for (int i = 0; i < this->PINS_MAX; i++)
+    {
+        total += this->qti[i].getWeight();
+    }
+    return total;
 }

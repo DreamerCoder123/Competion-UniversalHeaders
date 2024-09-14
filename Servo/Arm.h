@@ -36,6 +36,8 @@ void Arm::test_arm()
     {
         if (next_bool)
         {
+            for(int i=0;i < 6;i++) Serial.print(String(this->Servo_array[i].currentPulse) + String(" ,"));
+            Serial.println();
             Serial.println("Last motor debugging:");
             Serial.println(current_debugging);
             current_debugging++;
