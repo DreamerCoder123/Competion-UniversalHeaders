@@ -26,8 +26,8 @@ public:
     short int _qtiread();
 
 private:
-    qtis qti[6];
-    const short int PINS_MAX = 6;
+    qtis qti[4];
+    const short int PINS_MAX = 4;
 };
 New_qtis::New_qtis(qtis *qti)
 {
