@@ -37,6 +37,11 @@ void DcMotor::run(short int speedL, short int speedR)
         digitalWrite(this->red_l, 0);
         analogWrite(this->black_l, -1 * speedL);
     }
+    else
+    {
+        digitalWrite(this->red_l, 0);
+        digitalWrite(this->black_l, 0);
+    }
     // 右边直流电机
     if (speedR > 0)
     {
@@ -48,11 +53,9 @@ void DcMotor::run(short int speedL, short int speedR)
         digitalWrite(this->red_r, 0);
         analogWrite(this->black_r, -1 * speedR);
     }
-    if (speedL == 0 && speedR == 0)
+    else
     {
-        digitalWrite(this->red_l, 0);
-        digitalWrite(this->black_l, 0);
-        digitalWrite(this->red_r, 0);
-        digitalWrite(this->black_r, 0);
+        digitalWrite(this->red_r,0);
+        digitalWrite(this->black_r,0);
     }
 }
