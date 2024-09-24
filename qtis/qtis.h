@@ -17,7 +17,7 @@ qtis::qtis(unsigned char pin, unsigned char weight)
 }
 short int qtis::getWeight()
 {
-    return (!digitalRead(this->pin)) * this->weight; // 返回加权数
+    return (digitalRead(this->pin)) * this->weight; // 返回加权数
 }
 
 class muti_qti
