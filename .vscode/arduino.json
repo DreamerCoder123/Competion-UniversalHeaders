@@ -1,7 +1,7 @@
 {
     "board": "arduino:avr:mega",
     "port": "COM6",
-    "sketch": "main.ino",
+    "sketch": "UniversalHeaders.ino",
     "configuration": "cpu=atmega2560",
     "output": "C:\\Users\\w1894\\Desktop\\visualstudioOutput",
     "programmer": "arduino:avrisp"

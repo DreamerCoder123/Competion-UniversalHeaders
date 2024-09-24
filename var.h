@@ -2,10 +2,10 @@
 #include "qtis\qtis.h"
 #include "Servo\Arm.h"
 #include "qtis\qtis.h"
+#include "dcmotor\dcmotor.h"
 unsigned char arms_list[6] = {10, 9, 8, 13, 12, 11};
 const bool DUBUGGING = false;
-const short int husky_xm = 320; // 哈士奇x最大值320
-const short int husky_ym = 240; // 哈士奇y最大值240
+Servo turnTable(2);             // 小车转盘 2450-350 脉宽增加顺时针转动
 Arm arms;                       // 6机械臂
 qtis QTI_LOWDEG[2] = {
     qtis(23, 2), // 前面左边
