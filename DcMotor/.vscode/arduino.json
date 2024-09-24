@@ -1,6 +1,0 @@
-{
-    "configuration": "cpu=atmega328",
-    "board": "arduino:avr:diecimila",
-    "sketch": "DcMotor.ino",
-    "port": "COM3"
-}
