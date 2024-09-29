@@ -30,17 +30,19 @@ namespace qti_related
     {
         short int low = qtis_lowdeg._qtiread();
         short int high = qtis_highdeg._qtiread();
-        if (high == 3)
+        if (high == 3) // 转弯90°
         {
+            long long clock = millis();
             wheels.run(255, 255);
-            delay(300);
+            delay(300); // 向前走一小段距离
             wheels.run(-255, 255);
-            delay(900);
+            delay(500); // 向右走一段距离
             while (qtis_lowdeg._qtiread() != 1)
             {
-                if (qtis_lowdeg._qtiread() == 2)
+                if (qtis_lowdeg._qtiread() == 2 || millis() - clock > 3000)
                 {
                     break;
+                    // 如果右转时间大于一段时间，就退出右转
                 }
                 wheels.run(-255, 255);
             }
@@ -48,11 +50,11 @@ namespace qti_related
             delay(50);
             return;
         }
-        switch (low)
+        switch (low) // 微调
         {
         case 3:
         case 0:
-            wheels.run(200, 200); // 向前走
+            wheels.run(255, 255); // 向前走
             break;
         case 2:
             wheels.run(255, 0); // 向右走
