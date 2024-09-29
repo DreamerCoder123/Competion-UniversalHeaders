@@ -1,12 +1,11 @@
 #include "Servo\Arm.h"
 #include "var.h"
 #include "huskyControl.h"
-DcMotor wheels(4,5,6,7);
 void setup()
 {
-    Serial.begin(115200);
-    arms.init(arms_list, 6);
-    arms.Slow_move(Arm_opreations::Arm_points::GRABBER_READY, 200);
+    Serial.begin(115200);    // HardwareSerial  init
+    arms.init(arms_list, 7); // arms initlaization
+    // husky_related::init::init(); // husky initlaization
 }
 void loop()
 {
@@ -14,5 +13,10 @@ void loop()
     {
         arms.test_arm();
     }
-    wheels.run(255,255);
+    arms.Slow_move(Arm_opreations::Arm_points::qti_points, 200); // qti line tracking arm position
+    while (true)
+    {
+        qti_related::qti_run(); // 自动巡线
+        // Serial.println(QTI_LOWDEG[0].getWeight());
+    }
 }
