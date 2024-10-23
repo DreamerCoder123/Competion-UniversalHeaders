@@ -5,14 +5,17 @@ class Arm
 {
 private:
     const short int Servo_limit = 10;
-    Servo Servo_array[10];
     short int Full_servo_index; // 所有角度舵机序号
+    short int dur[7] = {1200, 1200, 1200, 1200, 1200, 1200, 1200};
+
 public:
+    Servo Servo_array[10];
     short int Servo_index = 0;
     void init(unsigned char *pins, short int length);
     void test_arm();                                         // 对手臂进行测试
     void Slow_move(short int *pulse_array, short int speed); // 手臂运动
     void insistace(short int time);
+    void QtConnection();
 };
 void Arm::init(unsigned char *pins, short int length)
 {
@@ -36,7 +39,8 @@ void Arm::test_arm()
     {
         if (next_bool)
         {
-            for(int i=0;i < this->Full_servo_index;i++) Serial.print(String(this->Servo_array[i].currentPulse) + String(" ,"));
+            for (int i = 0; i < this->Full_servo_index; i++)
+                Serial.print(String(this->Servo_array[i].currentPulse) + String(" ,"));
             Serial.println();
             Serial.println("Last motor debugging:");
             Serial.println(current_debugging);
@@ -96,5 +100,58 @@ void Arm::insistace(short int times)
         {
             this->Servo_array[i].FastMove_withOutDelay(this->Servo_array[i].currentPulse);
         }
+    }
+}
+void Arm::QtConnection()
+{
+    // 暂时废弃
+    // if (Serial.available())
+    // {                                                   
+    //     String receivedData = Serial.readStringUntil('\n');
+    //     // Serial.println(receivedData);
+    //     int dur[7] = {0, 0, 0, 0, 0, 0, 0};
+    //     int index = 0;
+    //     int temp = 0;
+
+    //     while (index < receivedData.length())
+    //     {
+    //         if (receivedData[index] == '/')
+    //         {
+    //             temp++;
+    //             index++;
+    //             continue;
+    //         }
+    //         dur[temp] = dur[temp] * 10 + (receivedData[index] - '0');
+    //         index++;
+    //     }
+    //     // Serial.write(dur[0]);
+    //     for (int i = 0; i < 7; i++)
+    //     {
+    //         this->dur[i] = dur[i];
+    //     }
+    // }
+    // this->Slow_move(this->dur, 20);
+    
+    // another ver
+    while (true)
+    {
+        if (Serial.available())
+        {                                                       // 检查串口是否有数据可读
+            String receivedData = Serial.readStringUntil('\n'); // 读取串口数据直到换行符
+            int index = 2;
+            int temp = receivedData[0] - '0';
+            int dur = 0;
+
+            //this->insistace(100);
+            if(receivedData.length() > 9) return;
+
+            while (index < receivedData.length())
+            {
+                dur = dur * 10 + (receivedData[index] - '0');
+                index++;
+            }
+            this->dur[temp] = dur;
+        }
+        this->Slow_move(dur,1);
     }
 }
