@@ -1,7 +1,8 @@
 #include "Servo\Arm.h"
 #include "var.h"
 #include "huskyControl.h"
-#define DEBUGGING false
+#define DEBUGGING true
+
 void setup()
 {
     Serial.begin(115200);                            // HardwareSerial  init
@@ -13,10 +14,11 @@ void setup()
     {
         arms.QtConnection();
     }
-    
 }
 void loop()
 {
-    Arm_opreations::catchbook_right();
-    Arm_opreations::catchbook_right_();
+    Arm_opreations::Arm_points::Catch_Book::catchbook_right();
+    Arm_opreations::Arm_points::Catch_Book::catchbook_right_();
+    Arm_opreations::Arm_points::Catch_Book::catchbook_left();
+    Arm_opreations::Arm_points::Catch_Book::catchbook_left_();
 }

@@ -17,6 +17,17 @@ public:
     void insistace(short int time);
     void QtConnection();
 };
+/**
+ * @brief Initialize the robot arm with the given pin numbers and number of joints.
+ *
+ * This function will initialize the robot arm by setting up the servo motors
+ * with the given pin numbers. It will also store the number of joints in the
+ * robot arm. If the number of joints is greater than the maximum allowed, it will
+ * print an error message and enter an infinite loop.
+ *
+ * @param pins The array of pin numbers for the servo motors.
+ * @param length The number of joints in the robot arm.
+ */
 void Arm::init(unsigned char *pins, short int length)
 {
     for (int i = 0; i < length; i++)
@@ -31,6 +42,17 @@ void Arm::init(unsigned char *pins, short int length)
             ;
     }
 }
+/**
+ * @brief A simple debugging function for testing all the joints of the robot arm.
+ *
+ * This function will go through each joint of the robot arm and test its servo
+ * motor. It will print the current pulse of each servo motor and wait for the
+ * user to input a command. If the command is 'q', it will move on to the next
+ * joint. If the command is 'u' or 'd', it will increase or decrease the current
+ * pulse of the servo motor. If the command is any other character, it will exit
+ * the function. The function will also exit if the user has finished testing
+ * all the joints.
+ */
 void Arm::test_arm()
 {
     bool next_bool = false;
@@ -64,6 +86,18 @@ void Arm::test_arm()
         }
     }
 }
+/**
+ * @brief Gradually moves the arm to the specified pulse positions at a given speed.
+ *
+ * This function calculates the difference between the current and target pulse
+ * positions for each servo in the arm, and then gradually moves each servo
+ * to its target position in steps, determined by the given speed. After reaching
+ * the target positions, it compensates by maintaining the final positions for a
+ * short duration.
+ *
+ * @param pulse_array An array of target pulse values for each servo.
+ * @param speed The number of steps to divide the movement, affecting the speed of motion.
+ */
 void Arm::Slow_move(short int *pulse_array, short int speed)
 {
     short int deltaPulse[10];
@@ -91,6 +125,15 @@ void Arm::Slow_move(short int *pulse_array, short int speed)
         delay(20);
     }
 }
+/**
+ * @brief Keep the current pose for a specified duration.
+ *
+ * This function is used to keep the current pose of the robotic arm for a
+ * specified duration. It is often used to keep the pose of the arm while
+ * performing a specific action, such as grasping an object.
+ *
+ * @param times The duration to keep the current pose
+ */
 void Arm::insistace(short int times)
 {
     unsigned long currentTime = millis();
@@ -104,35 +147,6 @@ void Arm::insistace(short int times)
 }
 void Arm::QtConnection()
 {
-    // 暂时废弃
-    // if (Serial.available())
-    // {                                                   
-    //     String receivedData = Serial.readStringUntil('\n');
-    //     // Serial.println(receivedData);
-    //     int dur[7] = {0, 0, 0, 0, 0, 0, 0};
-    //     int index = 0;
-    //     int temp = 0;
-
-    //     while (index < receivedData.length())
-    //     {
-    //         if (receivedData[index] == '/')
-    //         {
-    //             temp++;
-    //             index++;
-    //             continue;
-    //         }
-    //         dur[temp] = dur[temp] * 10 + (receivedData[index] - '0');
-    //         index++;
-    //     }
-    //     // Serial.write(dur[0]);
-    //     for (int i = 0; i < 7; i++)
-    //     {
-    //         this->dur[i] = dur[i];
-    //     }
-    // }
-    // this->Slow_move(this->dur, 20);
-    
-    // another ver
     while (true)
     {
         if (Serial.available())
@@ -142,8 +156,7 @@ void Arm::QtConnection()
             int temp = receivedData[0] - '0';
             int dur = 0;
 
-            //this->insistace(100);
-            if(receivedData.length() > 9) return;
+            // this->insistace(100);
 
             while (index < receivedData.length())
             {
@@ -152,6 +165,6 @@ void Arm::QtConnection()
             }
             this->dur[temp] = dur;
         }
-        this->Slow_move(dur,1);
+        this->Slow_move(this->dur, 1);
     }
 }
