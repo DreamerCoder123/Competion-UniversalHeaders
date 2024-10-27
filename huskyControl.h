@@ -1,7 +1,7 @@
 #pragma once
 #include "HUSKYLENS.h"
 #include "SoftwareSerial.h"
-#include "var.h"
+#include "Constants.h"
 HUSKYLENS husky;                                 // X 320 Y 240
 SoftwareSerial huskylens_softwareSerial(51, 52); // 哈士奇软串口接点
 HUSKYLENSResult huskylens_result;                // 哈士奇结果存储
