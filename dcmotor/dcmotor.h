@@ -20,6 +20,19 @@ DcMotor::DcMotor(short int red_l, short int black_l, short int red_r, short int 
     this->red_r = red_r;
     this->black_r = black_r;
 }
+/**
+ * @brief Control the speed and direction of the left and right DC motors.
+ *
+ * This function takes the desired speed for the left and right motors,
+ * constrains the speed values within the range of -255 to 255, and sets
+ * the motor output accordingly. Positive speed values make the motors
+ * rotate in one direction, negative values in the opposite direction,
+ * and zero stops the motors. It uses PWM signals to control the motor
+ * speed and digital signals to control the motor direction.
+ *
+ * @param speedL The speed for the left motor, ranging from -255 to 255.
+ * @param speedR The speed for the right motor, ranging from -255 to 255.
+ */
 void DcMotor::run(short int speedL, short int speedR)
 {
     speedL = constrain(speedL, -255, 255);
