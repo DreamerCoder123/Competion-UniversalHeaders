@@ -38,9 +38,7 @@ namespace husky_related
             huskylens_softwareSerial.begin(9600);
             while (!husky.begin(huskylens_softwareSerial))
             {
-                Serial.println(F("Begin failed!"));
-                Serial.println(F("1.Please recheck the \"Protocol Type\" in HUSKYLENS (General Settings>>Protocol Type>>Serial 9600)"));
-                Serial.println(F("2.Please recheck the connection."));
+                Serial.println("HuskyLens not found,Please check connection and try again.");
                 delay(1000);
             }
         }
@@ -54,7 +52,7 @@ namespace husky_related
             if (!husky_related::huskylens_scan(ID))
             {
                 wheels.run(0,0);
-                husky.customText("Object Not found",0,0);
+                husky.customText("No avaible Object Found",0,0);
                 return false;
             }
             short int error = -1 * (huskylens_result.xCenter - husky_xm / 2); // 识别到的物体在哈士奇在屏幕上的误差
