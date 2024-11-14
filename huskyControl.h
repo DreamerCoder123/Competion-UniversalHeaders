@@ -46,19 +46,20 @@ namespace husky_related
     // 用于合作的命名空间
     namespace cooperate
     {
-        bool align(short int ID) // 依据哈士奇识别的结果调整角度舵机的位置
+        // 依据哈士奇识别的结果调整角度舵机的位置
+        bool align(short int ID)
         {
             const char sensitivity = 10; // 识别的精确度
             if (!husky_related::huskylens_scan(ID))
             {
-                wheels.run(0,0);
-                husky.customText("No avaible Object Found",0,0);
+                wheels.run(0, 0);
+                husky.customText("No avaible Object Found", 0, 0);
                 return false;
             }
             short int error = -1 * (huskylens_result.xCenter - husky_xm / 2); // 识别到的物体在哈士奇在屏幕上的误差
             if (abs(error) < sensitivity)
             {
-                wheels.run(0, 0);//如果在误差允许范围内->不动
+                wheels.run(0, 0); // 如果在误差允许范围内->不动
             }
             else if (error > 0)
             {

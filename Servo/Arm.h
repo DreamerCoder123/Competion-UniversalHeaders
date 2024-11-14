@@ -38,8 +38,7 @@ void Arm::init(unsigned char *pins, short int length)
     if (this->Servo_limit < length)  //! 对输入电机进行合法性检查
     {
         Serial.println("[Error] Too many joints!");
-        while (1)
-            ;
+        while (1);
     }
 }
 /**
