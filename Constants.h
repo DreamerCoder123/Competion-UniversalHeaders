@@ -2,8 +2,8 @@
 #include "qtis\qtis.h"
 #include "Servo\Arm.h"
 #include "dcmotor\dcmotor.h"
-#define RUN_TOWARDS 100, 100                            // 向前行进
-#define RUN_AFTERWARDS -170, -170                       // 向后行进
+#define RUN_TOWARDS 80, 80                              // 向前行进
+#define RUN_AFTERWARDS -80, -80                         // 向后行进
 #define RUN_LEFT 140, -140                              // 向左转弯
 #define RUN_RIGHT -140, 140                             // 向右转弯
 #define RUN_STOP 0, 0                                   // 停止
@@ -25,41 +25,44 @@ muti_qti qtis_lowdeg(QTI_LOWDEG, 2); // 低角度旋转的qti
 // 屎山代码发力了！！！(笑)
 namespace Arm_opreations
 {
-    short int qti_points[7] = {1250, 2450, 2350, 1200, 650, 1200, 1350}; // 灰度传感器巡线位点
+    short int scan[] = {2300, 2350, 2350, 1200, 650, 1200, 1350};        // husky传感器观测位点
+    short int qti_points[7] = {2300, 2350, 2350, 1200, 650, 1200, 1350}; // 灰度传感器巡线位点
     namespace Catch_Book
     {
         namespace constants
         {
-            const short int p_base = 1350;          // 运动到书架上抓住书的位置
-            const short int rigp1_base = 824;       // 运动到右边的第一本书
-            const short int rigp2_base = 780;       // 运动到右边的第二本书
-            const short int left1_base = 520;       // 运动到左边的第一本书
-            const short int left2_base = 570;       // 运动到左边的第二本书
-            const short int catch_tightness = 1450; // 爪子的紧张程度
+            const short int p_base = 1350;            // 运动到书架上抓住书的位置
+            const short int rigp1_base = 775;         // 运动到右边的第一本书
+            const short int rigp2_base = 750;         // 运动到右边的第二本书
+            const short int left1_base = 500;         // 运动到左边的第一本书
+            const short int left2_base = 545;         // 运动到左边的第二本书
+            const short int catch_tightness = 2550;   // 爪子的紧张程度
+            const short int decatch_tightness = 2300; // 未夹书的紧张程度
 
+            short r_num = 0; // 右边书框内书的数量
+            short l_num = 0; // 左边书框内书的数量
         }
         // 1400,900,1850,1200,650,1200,527
-        short int p1[] = {1300, 1750, 1750, 1200, 650, 1200, constants::p_base};
-        short int p2[] = {1300, 900, 1750, 1200, 650, 1200, constants::p_base};
-        short int p3[] = {constants::catch_tightness, 900, 1750, 1200, 650, 1200, constants::p_base};
+        short int p1[] = {constants::decatch_tightness, 1750, 1750, 1200, 650, 1200, constants::p_base};
+        short int p2[] = {constants::decatch_tightness, 850, 1750, 1200, 650, 1200, constants::p_base};
+        short int p3[] = {constants::catch_tightness, 850, 1750, 1200, 650, 1200, constants::p_base};
         short int p4[] = {constants::catch_tightness, 1850, 1750, 1200, 650, 1200, constants::p_base};
         // 运动到书框位置抓书
         short int rigp1[] = {constants::catch_tightness, 1850, 1950, 1200, 650, 1200, constants::rigp1_base};
         short int rigp2[] = {constants::catch_tightness, 900, 1850, 1200, 650, 1200, constants::rigp1_base};
-        short int rigp3[] = {1400, 900, 1850, 1200, 650, 1200, constants::rigp1_base};
-        // 1400,1225,2050,1200,650,1200,840
-        //
+        short int rigp3[] = {constants::decatch_tightness, 900, 1850, 1200, 650, 1200, constants::rigp1_base};
+
         short int rigp_1[] = {constants::catch_tightness, 1850, 1950, 1200, 650, 1200, constants::rigp2_base};
         short int rigp_2[] = {constants::catch_tightness, 900, 1850, 1200, 650, 1200, constants::rigp2_base};
-        short int rigp_3[] = {1400, 900, 1850, 1200, 650, 1200, constants::rigp2_base};
+        short int rigp_3[] = {constants::decatch_tightness, 900, 1850, 1200, 650, 1200, constants::rigp2_base};
         // 运动到左边释放书
         short int lefp1[] = {constants::catch_tightness, 1650, 1950, 1200, 650, 1200, constants::left1_base};
         short int lefp2[] = {constants::catch_tightness, 900, 1850, 1200, 650, 1200, constants::left1_base};
-        short int lefp3[] = {1400, 900, 1850, 1200, 650, 1200, constants::left1_base};
+        short int lefp3[] = {constants::decatch_tightness, 900, 1850, 1200, 650, 1200, constants::left1_base};
 
         short int lefp1_[] = {constants::catch_tightness, 1650, 1950, 1200, 650, 1200, constants::left2_base};
         short int lefp2_[] = {constants::catch_tightness, 900, 1850, 1200, 650, 1200, constants::left2_base};
-        short int lefp3_[] = {1400, 900, 1850, 1200, 650, 1200, constants::left2_base};
+        short int lefp3_[] = {constants::decatch_tightness, 900, 1850, 1200, 650, 1200, constants::left2_base};
 
         void catchbook_right()
         {
@@ -109,49 +112,99 @@ namespace Arm_opreations
             arms.Slow_move(Arm_opreations::Catch_Book::lefp1_, 20);
             arms.Slow_move(Arm_opreations::qti_points, 50);
         }
+        // 抓书调用此函数即可
+        void catchbook(short int ID)
+        {
+            if (ID == 1)
+            {
+                // 如果识别到id为1的书籍，就抓到右边去
+                if (constants::r_num == 0)
+                {
+                    // 按顺序执行抓取书籍的任务
+                    catchbook_right();
+                    constants::r_num = 1;
+                }
+                else if (constants::r_num == 1)
+                {
+                    // 按顺序执行抓取书籍的任务
+                    catchbook_right_();
+                    constants::r_num = 0;
+                }
+            }
+            else if (ID == 2)
+            {
+                // 如果识别到id为2的书籍，就抓到左边去
+                if (constants::l_num == 0)
+                {
+                    // 按顺序执行抓取书籍的任务
+                    catchbook_left();
+                    constants::l_num = 1;
+                }
+                else if (constants::l_num == 1)
+                {
+                    // 按顺序执行抓取书籍的任
+                    catchbook_left_();
+                    constants::l_num = 0;
+                }
+            }
+            else
+            {
+                return;
+            }
+            return;
+        }
     }
     namespace Chan_book
     {
         namespace constants
         {
             const short int right_base = 2100; // 右边的铲子位置
-            const short int left_base = 1840;  // 左边的铲子位置
+            const short int left_base = 1870;  // 左边的铲子位置
         }
-        short int right1[] = {1200, 1050, 1800, 2600, 2000, 1550, constants::right_base};
-        short int right2[] = {1200, 1050, 1800, 2600, 2000, 2550, constants::right_base};
-        short int right3[] = {1200, 1050, 1800, 2050, 2000, 2550, constants::right_base};
-        short int right4[] = {1200, 1050, 1800, 2500, 2000, 2500, constants::right_base};
-        short int right5[] = {1200, 1050, 1800, 2500, 2000, 2500, constants::right_base};
-        short int right6[] = {1200, 1050, 1800, 850, 2050, 1350, constants::right_base};
 
-        // 左边的铲子运动点
-        short int left1[] = {1200, 1050, 1800, 2600, 2000, 1550, constants::left_base};
-        short int left2[] = {1200, 1050, 1800, 2600, 2000, 2550, constants::left_base};
-        short int left3[] = {1200, 1050, 1800, 2050, 2000, 2550, constants::left_base};
-        short int left4[] = {1200, 1050, 1800, 2390, 2000, 2500, constants::left_base};
-        short int left5[] = {1200, 1050, 1800, 2390, 2000, 2500, constants::left_base};
-        short int left6[] = {1200, 1050, 1800, 850, 2050, 1350, constants::left_base};
+        short int p1[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, Arm_opreations::Catch_Book::constants::p_base};
+        short int p2[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, constants::right_base};
+        short int p3[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1760, 870, 1710, constants::right_base};
+        short int p4[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1850, 1140, 1920, constants::right_base};
+        short int p_up[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 1920, constants::right_base};
 
-        // 无论左右都共用的点
-        // 向右边放下铲子，铲书
+        short int p1_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, Arm_opreations::Catch_Book::constants::p_base};
+        short int p2_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, constants::left_base};
+        short int p3_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2000, 790, 1710, constants::left_base};
+        short int p4_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1800, 1040, 1920, constants::left_base};
+        short int p_up_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 1920, constants::left_base};
         void chanbook_right()
         {
-            arms.Slow_move(Arm_opreations::Chan_book::right1, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::right2, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::right3, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::right4, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::right5, 20);
-            arms.Slow_move(Arm_opreations::Chan_book::right6, 100);
+            arms.Slow_move(Arm_opreations::Chan_book::p1, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::p2, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::p3, 20);
+            arms.Slow_move(Arm_opreations::Chan_book::p4, 20);
+            arms.insistace(1000); // 等待机械臂稳定
+            arms.Slow_move(Arm_opreations::Chan_book::p_up, 50);
         }
-        // 向左边放在铲子，铲书
         void chanbook_left()
         {
-            arms.Slow_move(Arm_opreations::Chan_book::left1, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::left2, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::left3, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::left4, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::left5, 20);
-            arms.Slow_move(Arm_opreations::Chan_book::left6, 100);
+            arms.Slow_move(Arm_opreations::Chan_book::p1_, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::p2_, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::p3_, 20);
+            arms.Slow_move(Arm_opreations::Chan_book::p4_, 20);
+            // arms.insistace(2000); // 等待机械臂稳定
+            arms.Slow_move(Arm_opreations::Chan_book::p_up_, 50);
+        }
+        void chanbook(short int ID)
+        {
+            const short int Left = 5;  // 右边书框对应识别到好书框id
+            const short int Right = 6; // 左边书框对应识别到好书框id
+            if (ID == Left)
+            {
+                // 将左边书框的书籍释放
+                chanbook_left();
+            }
+            else if (ID == Right)
+            {
+                // 将右边书框的书籍释放
+                chanbook_right();
+            }
         }
     }
 }
