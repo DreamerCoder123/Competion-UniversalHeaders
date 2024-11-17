@@ -165,14 +165,14 @@ namespace Arm_opreations
         short int p1[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, Arm_opreations::Catch_Book::constants::p_base};
         short int p2[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, constants::right_base};
         short int p3[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1760, 870, 1710, constants::right_base};
-        short int p4[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1850, 1140, 1920, constants::right_base};
-        short int p_up[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 1920, constants::right_base};
+        short int p4[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1850, 1140, 2270, constants::right_base};
+        short int p_up[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 2270, constants::right_base};
 
         short int p1_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, Arm_opreations::Catch_Book::constants::p_base};
         short int p2_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1200, 650, 1200, constants::left_base};
         short int p3_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2000, 790, 1710, constants::left_base};
-        short int p4_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1800, 1040, 1920, constants::left_base};
-        short int p_up_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 1920, constants::left_base};
+        short int p4_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 1800, 1040, 2270, constants::left_base};
+        short int p_up_[] = {Catch_Book::constants::decatch_tightness, 2450, 2350, 2550, 740, 2270, constants::left_base};
         void chanbook_right()
         {
             arms.Slow_move(Arm_opreations::Chan_book::p1, 50);

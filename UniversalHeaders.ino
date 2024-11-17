@@ -17,6 +17,7 @@ void setup()
         Serial.println("Warning Debugging Mode"); // 打印提示信息
     }
 }
-void loop(){
-    husky_related::cooperate::Acessbility(1);
+void loop()
+{
+    arms.Slow_move(Arm_opreations::qti_points, 50);
 }
