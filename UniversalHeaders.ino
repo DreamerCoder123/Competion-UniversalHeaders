@@ -56,7 +56,7 @@ bool while_catch(short int id)
 }
 void while_chan(short int id)
 {
-    char Bookshelf = (id == 1) ? 7 : 6;
+    short int Bookshelf = (id == 1) ? 7 : 6;
     // 如果检测到放置id=2的整齐书框
     if ((Bookshelf == 7 ? r_num : l_num) != 0)
     {
@@ -78,6 +78,7 @@ void while_chan(short int id)
     {
         qti_related::qti_run();
         husky.customText("No ok book for " + String(Bookshelf), 0, 0);
+        Serial.println(Bookshelf);
     }
 }
 
@@ -89,9 +90,15 @@ void loop()
         wheels.run(RUN_TOWARDS);
         // 检测到放置id=2的大书框
     }
+    husky.request();
+    Serial.println(husky.count());
     if (husky_count > 0)
     {
         current_time_husky = millis();
+    }
+    else
+    {
+        husky.customText("No scan in:" + String(long(current_time_husky)),0,0);
     }
     // 速度控制
     if (millis() - current_time_husky > 3000)
@@ -102,13 +109,14 @@ void loop()
     }
     else
     {
-        speedLeft = 85;
-        speedRight = 85;
+        speedLeft = 100;
+        speedRight = 100;
     }
     current_timec = millis();
+
     if (husky_related::detectID(5))
     {
-        while (millis() - current_timec < 4000 && (l_num != 2 || r_num != 2))
+        while (millis() - current_timec < 3000 && (l_num != 2 || r_num != 2))
         {
             qti_related::qti_run();
             while_catch(1);
