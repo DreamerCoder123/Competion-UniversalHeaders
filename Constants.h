@@ -5,7 +5,7 @@
 #include "HUSKYLENS.h"
 #define RUN_TOWARDS 90, 90                              // 向前行进
 #define RUN_AFTERWARDS -80, -80                         // 向后行进
-#define RUN_LEFT 140, -140                              // 向左转弯
+#define RUN_LEFT 200, -200                              // 向左转弯
 #define RUN_RIGHT -100, 100                             // 向右转弯
 #define RUN_STOP 0, 0                                   // 停止
 short int speedLeft = 70, speedRight = 70;              // 左右轮子速度
@@ -18,8 +18,8 @@ qtis QTI_LOWDEG[2] = {
     qtis(24, 1), // 前面右边
 }; // 在内侧的两个QTI
 qtis QTI_HIGHDEG[2] = {
-    qtis(22, 1), // 左左
-    qtis(25, 2), // 右右
+    qtis(25, 1), // 左左
+    qtis(21, 2), // 右右
 }; // 在外侧的两个QTI
 muti_qti qtis_highdeg(QTI_HIGHDEG, 2);
 muti_qti qtis_lowdeg(QTI_LOWDEG, 2); // 低角度旋转的qti
@@ -29,17 +29,17 @@ HUSKYLENS husky;                     //?注意，这里不得不将哈士奇的�
 // 屎山代码发力了！！！(笑)
 namespace Arm_opreations
 {
-    short int scan[7] = {2300, 2350, 2350, 1200, 650, 1200, 1350};       // husky传感器观测位点
-    short int qti_points[7] = {2300, 2350, 2350, 1200, 650, 1200, 1350}; // 灰度传感器巡线位点
+    short int scan[7] = {2300, 2350, 2350, 1200, 650, 1200, 1250};       // husky传感器观测位点
+    short int qti_points[7] = {2300, 2350, 2350, 1200, 650, 1200, 1250}; // 灰度传感器巡线位点
     namespace Catch_Book
     {
         namespace constants
         {
-            const short int p_base = 1350;            // 运动到书架上抓住书的位置
-            const short int rigp1_base = 800;         // 运动到右边的第一本书
-            const short int rigp2_base = 765;         // 运动到右边的第二本书
-            const short int left1_base = 505;         // 运动到左边的第一本书
-            const short int left2_base = 530;         // 运动到左边的第二本书
+            const short int p_base = 1250;            // 运动到书架上抓住书的位置
+            const short int rigp1_base = 680;         // 运动到右边的第一本书
+            const short int rigp2_base = 640;         // 运动到右边的第二本书
+            const short int left1_base = 420;         // 运动到左边的第一本书
+            const short int left2_base = 395;         // 运动到左边的第二本书
             const short int catch_tightness = 2450;   // 爪子的紧张程度
             const short int decatch_tightness = 2300; // 未夹书的紧张程度
         }
@@ -165,9 +165,9 @@ namespace Arm_opreations
     {
         namespace constants
         {
-            const short int right_base = 2080;   // 右边的铲子位置
-            const short int left_base = 1858;    // 左边的铲子位置
-            const short int release_base = 2600; // 释放书的位置
+            const short int right_base = 2020;   // 右边的铲子位置
+            const short int left_base = 1800;    // 左边的铲子位置
+            const short int release_base = 2550; // 释放书的位置
         }
 
         // 2330,2450,2350,2350,900,2150,2110
@@ -257,7 +257,7 @@ namespace qti_related
             wheels.run(RUN_TOWARDS);
             delay(400); // 向前走一小段距离
             wheels.run(RUN_LEFT);
-            delay(400); // 向左走一段距离
+            delay(100); // 向左走一段距离
             while (qtis_lowdeg._qtiread() != 2)
             {
                 if (millis() - clock > 10000)

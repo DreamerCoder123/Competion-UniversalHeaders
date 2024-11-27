@@ -84,34 +84,31 @@ void while_chan(short int id)
 
 void loop()
 {
+    l_num=2;
+    r_num=2;
     qti_related::qti_run();
-    if (husky_related::detectID(6))
-    {
-        wheels.run(RUN_TOWARDS);
-        // 检测到放置id=2的大书框
-    }
-    husky.request();
-    Serial.println(husky.count());
-    if (husky_count > 0)
-    {
-        current_time_husky = millis();
-    }
-    else
-    {
-        husky.customText("No scan in:" + String(long(current_time_husky)),0,0);
-    }
-    // 速度控制
-    if (millis() - current_time_husky > 3000)
-    {
-        // 3秒没有检测到标签，提升速度
-        speedLeft = 75;
-        speedRight = 75;
-    }
-    else
-    {
-        speedLeft = 100;
-        speedRight = 100;
-    }
+    // if (husky_count > 0)
+    // {
+    //     current_time_husky = millis();
+    // }
+    // else
+    // {
+    //     husky.customText("No scan in:" + String(long(millis() - current_time_husky)), 0, 0);
+    //     qti_related::qti_run();
+    //     // qti巡线分布
+    // }
+    // // 速度控制
+    // if (millis() - current_time_husky > 3000)
+    // {
+    //     // 3秒没有检测到标签，提升速度
+    //     speedLeft = 90;
+    //     speedRight = 90;
+    // }
+    // else
+    // {
+    //     speedLeft = 70;
+    //     speedRight = 70;
+    // }
     current_timec = millis();
 
     if (husky_related::detectID(5))

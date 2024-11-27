@@ -79,12 +79,12 @@ namespace husky_related
             }
             else if (error > 0)
             {
-                short int speed = constrain(abs(error) * k, 55, 80);
+                short int speed = constrain(abs(error) * k, 55, 100);
                 wheels.run(speed, speed); // 前进
             }
             else if (error < 0)
             {
-                short int speed = constrain(-1 * abs(error) * k, -80, -55);
+                short int speed = constrain(-1 * abs(error) * k, -100, -55);
                 wheels.run(speed, speed); // 后退
             }
             delay(5);
