@@ -8,7 +8,7 @@
 #define RUN_LEFT 200, -200                              // 向左转弯
 #define RUN_RIGHT -100, 100                             // 向右转弯
 #define RUN_STOP 0, 0                                   // 停止
-short int speedLeft = 70, speedRight = 70;              // 左右轮子速度
+short int speedLeft = 75, speedRight = 75;              // 左右轮子速度
 unsigned char arms_list[7] = {10, 9, 8, 13, 12, 11, 2}; // 所有角度舵机的集合，包括转盘
 short int dur[7] = {1200, 1200, 1200, 1200, 1200, 1200, 1200};
 Arm arms;                   // 存储7个机械臂的数组
@@ -29,17 +29,17 @@ HUSKYLENS husky;                     //?注意，这里不得不将哈士奇的�
 // 屎山代码发力了！！！(笑)
 namespace Arm_opreations
 {
-    short int scan[7] = {2300, 2350, 2350, 1200, 650, 1200, 1250};       // husky传感器观测位点
-    short int qti_points[7] = {2300, 2350, 2350, 1200, 650, 1200, 1250}; // 灰度传感器巡线位点
+    short int scan[7] = {2300, 2350, 2050, 1200, 650, 1200, 1250};       // husky传感器观测位点
+    short int qti_points[7] = {2300, 2350, 2050, 1200, 650, 1200, 1250}; // 灰度传感器巡线位点
     namespace Catch_Book
     {
         namespace constants
         {
             const short int p_base = 1250;            // 运动到书架上抓住书的位置
-            const short int rigp1_base = 680;         // 运动到右边的第一本书
-            const short int rigp2_base = 640;         // 运动到右边的第二本书
+            const short int rigp1_base = 700;         // 运动到右边的第一本书
+            const short int rigp2_base = 680;         // 运动到右边的第二本书
             const short int left1_base = 420;         // 运动到左边的第一本书
-            const short int left2_base = 395;         // 运动到左边的第二本书
+            const short int left2_base = 450;         // 运动到左边的第二本书
             const short int catch_tightness = 2450;   // 爪子的紧张程度
             const short int decatch_tightness = 2300; // 未夹书的紧张程度
         }
@@ -47,32 +47,32 @@ namespace Arm_opreations
         // 2270,550,1550,1200,650,1200,1350
         // 2420,550,1550,1200,650,1200,1350
         // 2420,550,1200,1200,650,1200,1350
-        short int p1[] = {constants::decatch_tightness, 400, 1150, 1200, 650, 1200, constants::p_base};
-        short int p2[] = {constants::decatch_tightness, 500, 1400, 1200, 650, 1200, constants::p_base};
-        short int p3[] = {constants::catch_tightness, 500, 1400, 1200, 650, 1200, constants::p_base};
-        short int p4[] = {constants::catch_tightness, 500, 1000, 1200, 650, 1200, constants::p_base};
+        short int p1[] = {2270, 1050, 1250, 1200, 650, 1200, 1250};
+        short int p2[] = {2270, 600, 1250, 1200, 650, 1200, 1250};
+        short int p3[] = {2450, 600, 1250, 1200, 650, 1200, 1250};
+        short int p4[] = {2450, 1050, 1250, 1200, 650, 1200, 1250};
 
         // 2380,820,1840,1200,650,1200,830
 
-        short int rigp1[] = {constants::catch_tightness, 900, 1500, 1200, 650, 1200, constants::rigp1_base};
-        short int rigp2[] = {constants::catch_tightness, 820, 1840, 1200, 650, 1200, constants::rigp1_base};
-        short int rigp3[] = {constants::decatch_tightness, 820, 1840, 1200, 650, 1200, constants::rigp1_base};
-        short int rigp4[] = {constants::decatch_tightness, 900, 1500, 1200, 650, 1200, constants::rigp1_base};
+        short int rigp1[] = {2450, 900, 1050, 1200, 600, 1200, constants::rigp1_base};
+        short int rigp2[] = {2450, 900, 1600, 1200, 600, 1200, constants::rigp1_base};
+        short int rigp3[] = {2300, 900, 1600, 1200, 600, 1200, constants::rigp1_base};
+        short int rigp4[] = {2450, 900, 1050, 1200, 600, 1200, constants::rigp1_base};
 
-        short int rigp_1[] = {constants::catch_tightness, 900, 1500, 1200, 650, 1200, constants::rigp2_base};
-        short int rigp_2[] = {constants::catch_tightness, 820, 1840, 1200, 650, 1200, constants::rigp2_base};
-        short int rigp_3[] = {constants::decatch_tightness, 820, 1840, 1200, 650, 1200, constants::rigp2_base};
-        short int rigp_4[] = {constants::decatch_tightness, 900, 1500, 1200, 650, 1200, constants::rigp2_base};
+        short int rigp_1[] = {2450, 900, 1050, 1200, 600, 1200, constants::rigp2_base};
+        short int rigp_2[] = {2450, 900, 1600, 1200, 600, 1200, constants::rigp2_base};
+        short int rigp_3[] = {2300, 900, 1600, 1200, 600, 1200, constants::rigp2_base};
+        short int rigp_4[] = {2450, 900, 1050, 1200, 600, 1200, constants::rigp2_base};
 
-        short int lefp1[] = {constants::catch_tightness, 900, 1500, 1200, 650, 1200, constants::left1_base};
-        short int lefp2[] = {constants::catch_tightness, 820, 1840, 1200, 650, 1200, constants::left1_base};
-        short int lefp3[] = {constants::decatch_tightness, 820, 1840, 1200, 650, 1200, constants::left1_base};
-        short int lefp4[] = {constants::decatch_tightness, 900, 1500, 1200, 650, 1200, constants::left1_base};
+        short int lefp1[] = {constants::catch_tightness, 900, 1050, 1200, 650, 1200, constants::left1_base};
+        short int lefp2[] = {constants::catch_tightness, 900, 1600, 1200, 650, 1200, constants::left1_base};
+        short int lefp3[] = {constants::decatch_tightness, 900, 1600, 1200, 650, 1200, constants::left1_base};
+        short int lefp4[] = {constants::decatch_tightness, 900, 1050, 1200, 650, 1200, constants::left1_base};
 
-        short int lefp_1[] = {constants::catch_tightness, 900, 1500, 1200, 650, 1200, constants::left2_base};
-        short int lefp_2[] = {constants::catch_tightness, 820, 1840, 1200, 650, 1200, constants::left2_base};
-        short int lefp_3[] = {constants::decatch_tightness, 820, 1840, 1200, 650, 1200, constants::left2_base};
-        short int lefp_4[] = {constants::decatch_tightness, 900, 1500, 1200, 650, 1200, constants::left2_base};
+        short int lefp_1[] = {constants::catch_tightness, 900, 1050, 1200, 650, 1200, constants::left2_base};
+        short int lefp_2[] = {constants::catch_tightness, 900, 1600, 1200, 650, 1200, constants::left2_base};
+        short int lefp_3[] = {constants::decatch_tightness, 900, 1600, 1200, 650, 1200, constants::left2_base};
+        short int lefp_4[] = {constants::decatch_tightness, 900, 1050, 1200, 650, 1200, constants::left2_base};
 
         void catchbook_right()
         {
@@ -165,8 +165,8 @@ namespace Arm_opreations
     {
         namespace constants
         {
-            const short int right_base = 2020;   // 右边的铲子位置
-            const short int left_base = 1800;    // 左边的铲子位置
+            const short int right_base = 2010;   // 右边的铲子位置
+            const short int left_base = 1790;    // 左边的铲子位置
             const short int release_base = 2550; // 释放书的位置
         }
 
@@ -198,11 +198,11 @@ namespace Arm_opreations
         // 2180,2450,2350,1300,940,1520,2600
         void release_book()
         {
-            arms.Slow_move(Arm_opreations::Chan_book::r_p1, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::r_p1, 70);
             arms.Slow_move(Arm_opreations::Chan_book::r_p2, 50);
-            arms.Slow_move(Arm_opreations::Chan_book::r_p3, 10);
+            // arms.Slow_move(Arm_opreations::Chan_book::r_p3, 20);
             arms.Slow_move(Arm_opreations::Chan_book::r_p4, 20);
-            arms.Slow_move(Arm_opreations::Chan_book::r_p5, 50);
+            arms.Slow_move(Arm_opreations::Chan_book::r_p5, 100);
             arms.Slow_move(Arm_opreations::qti_points, 50);
         }
 
@@ -211,7 +211,7 @@ namespace Arm_opreations
             arms.Slow_move(Arm_opreations::Chan_book::p1, 50);
             arms.Slow_move(Arm_opreations::Chan_book::p2, 50);
             arms.Slow_move(Arm_opreations::Chan_book::p3, 30);
-            arms.Slow_move(Arm_opreations::Chan_book::p4, 5);
+            arms.Slow_move(Arm_opreations::Chan_book::p4, 0);
             arms.insistace(500); // 等待机械臂稳定
             arms.Slow_move(Arm_opreations::Chan_book::p_up, 50);
         }
@@ -276,10 +276,10 @@ namespace qti_related
             wheels.run(speedLeft, speedRight); // 向前走
             break;
         case 2:
-            wheels.run(150, 0); // 向左走
+            wheels.run(170, 0); // 向左走
             break;
         case 1:
-            wheels.run(0, 150); // 向右走
+            wheels.run(0, 170); // 向右走
             break;
         default:
             wheels.run(RUN_TOWARDS); // 向前走

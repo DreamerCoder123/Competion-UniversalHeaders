@@ -62,10 +62,9 @@ namespace husky_related
     namespace cooperate
     {
         // 依据哈士奇识别的结果调整角度舵机的位置
-        bool align(short int ID)
+        bool align(short int ID,float k=0.7)
         {
-            const float k = 0.8;
-            const char sensitivity = 15; // 识别的精确度
+            const char sensitivity = 20; // 识别的精确度
             if (!husky_related::huskylens_scan(ID))
             {
                 wheels.run(0, 0);
@@ -79,12 +78,12 @@ namespace husky_related
             }
             else if (error > 0)
             {
-                short int speed = constrain(abs(error) * k, 55, 100);
+                short int speed = constrain(abs(error) * k, 55, 70);
                 wheels.run(speed, speed); // 前进
             }
             else if (error < 0)
             {
-                short int speed = constrain(-1 * abs(error) * k, -100, -55);
+                short int speed = constrain(-1 * abs(error) * k, -70, -55);
                 wheels.run(speed, speed); // 后退
             }
             delay(5);
@@ -95,13 +94,13 @@ namespace husky_related
             husky.customText("Error:" + String(NewError) + String(abs(NewError) < sensitivity ? " OK" : " Waiting"), 0, 0);
             return abs(error) < sensitivity;
         }
-        bool avaiblility_check(short int ID, float percentage = 0.5, float less_percentage = 0.3)
+        bool avaiblility_check(short int ID,float k=0.8, float percentage = 0.5, float less_percentage = 0.3)
         {
             const short int total = 50;
             short int sum = 0;
             for (int qi = 0; qi < total; qi++)
             {
-                sum += align(ID) ? 1 : 0;
+                sum += align(ID,k) ? 1 : 0;
                 if (1.0 * sum / qi > percentage && qi > less_percentage * total)
                 {
                     return true;
