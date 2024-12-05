@@ -2,7 +2,7 @@
 #include "Constants.h"
 #include "huskyControl.h"
 // 机械臂的最佳铲书点~2=0cm
-#define DEBUGGING false
+#define DEBUGGING true
 long long current_timec = millis();
 long long current_time_husky = millis();
 void setup()
